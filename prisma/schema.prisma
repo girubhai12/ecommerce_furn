@@ -1,0 +1,49 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+
+  id           String    @id @unique
+  email        String
+  firstName    String 
+  lastName     String
+  profileImage             String
+  connectedAccountId       String @unique
+  stripeConnectedLinked    Boolean @default(false)
+
+  product Product[]
+
+  // after caht gpt caheck once 
+    // products Product[]
+}
+model Product {
+  id                 String        @id @default(uuid())
+  name               String
+  price              Int
+  smallDescription   String
+  description        Json
+  images             String[]
+  productfile        String
+  category           CategoryTypes
+
+  createdAt   DateTime @default(now())
+  user         User?     @relation(fields: [userId],references: [id])
+  userId       String?
+}
+
+enum CategoryTypes{
+  bed
+  lamp
+  sofa
+
+}
+
+
