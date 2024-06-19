@@ -242,3 +242,26 @@ export async function CreateStripeAccoutnLink(){
 
 return redirect(accountLink.url);
 }
+
+
+export async function GetStripeDashboardLink() {
+    const {getUser } = getKindeServerSession();
+
+    const user = await getUser();
+    if (!user) {
+        throw new Error();
+    }
+    const data = await prisma .user.findUnique({
+        where:{
+            id:user.id,
+        },
+        select:{
+            connectedAccountId: true,
+        }
+    });
+    const loginLink = await stripe.accounts.createLoginLink(
+        data?.connectedAccountId as string
+    )
+     return redirect (loginLink.url);
+    
+}

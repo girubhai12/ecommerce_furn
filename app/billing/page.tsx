@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "../lib/db";
 import { Button } from "@/components/ui/button";
-import { CreateStripeAccoutnLink } from "../actions";
+import { CreateStripeAccoutnLink, GetStripeDashboardLink } from "../actions";
 import { Submitbutton } from "../components/SubmitButtons";
 
 async function getData(userId: string){
@@ -56,6 +56,11 @@ export default async function BillingRoute(){
       
           <Submitbutton title="Link your account to stripe
 " />
+      </form>
+    )}
+    {data?.stripeConnectedLinked == true && (
+      <form action ={ GetStripeDashboardLink } >
+        <Submitbutton title="view Dashboard" />
       </form>
     )}
 
